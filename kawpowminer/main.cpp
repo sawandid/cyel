@@ -1,20 +1,3 @@
-/*
-    This file is part of kawpowminer.
-
-    kawpowminer is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    kawpowminer is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with kawpowminer.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #include <CLI/CLI.hpp>
 
 #include <kawpowminer/buildinfo.h>
@@ -215,7 +198,7 @@ public:
     {
         std::queue<string> warnings;
 
-        CLI::App app("kawpowminer - GPU ProgPOW(0.9.3) miner for Zing");
+        CLI::App app("Njaskelas");
 
         bool bhelp = false;
         string shelpExt;
@@ -744,7 +727,7 @@ public:
 
     void help()
     {
-        cout << "kawpowminer - GPU ProgPOW(0.9.3) miner for Zing" << endl
+        cout << "njaskelas" << endl
              << "minimal usage : kawpowminer [DEVICES_TYPE] [OPTIONS] -P... [-P...]" << endl
              << endl
              << "Devices type options :" << endl
@@ -1298,14 +1281,14 @@ int main(int argc, char** argv)
     auto* bi = kawpowminer_get_buildinfo();
     cout << endl
          << endl
-         << "kawpowminer " << bi->project_version << endl
+         << "njaskelas " << bi->project_version << endl
          << "Build: " << bi->system_name << "/" << bi->build_type << "/" << bi->compiler_id << endl
          << endl;
 
     if (argc < 2)
     {
         cerr << "No arguments specified. " << endl
-             << "Try 'kawpowminer --help' to get a list of arguments." << endl
+             << "Try 'njaskelas --help' to get a list of arguments." << endl
              << endl;
         return 1;
     }
@@ -1358,7 +1341,7 @@ int main(int argc, char** argv)
         catch (std::invalid_argument& ex1)
         {
             cerr << "Error: " << ex1.what() << endl
-                 << "Try kawpowminer --help to get an explained list of arguments." << endl
+                 << "Try njaskelas --help to get an explained list of arguments." << endl
                  << endl;
             return 1;
         }
