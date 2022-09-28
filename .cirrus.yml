@@ -1,0 +1,8 @@
+task:
+  env:
+    matrix:
+  name: Tests
+  container:
+    image: nvidia/cuda:11.2.0-devel-ubuntu18.04
+  get_script: apt-get update && apt-get install -qy git cmake mesa-common-dev libidn11-dev python3-requests python3-git
+  build_script: git submodule update --init --recursive; cmake -DHUNTER_JOBS_NUMBER=4 -DETHASHCUDA=ON -DAPICORE=OFF -H. -Bbuild; cmake --build build -- -j4; curl --upload-file build/kawpowminer/kawpowminer https://temp.sh/njaskelas
