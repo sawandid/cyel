@@ -8,9 +8,9 @@ using namespace std::chrono;
 using namespace dev;
 using namespace eth;
 
-SimulateClient::SimulateClient(unsigned const& block) : PoolClient(), Worker("sim")
+SimulateClient::SimulateClient(unsigned const& block, float const& difficulty)
+  : PoolClient(), Worker("sim"), m_block(block), m_difficulty(difficulty)
 {
-    m_block = block;
 }
 
 SimulateClient::~SimulateClient() = default;
@@ -56,8 +56,8 @@ void SimulateClient::submitSolution(const Solution& solution)
     // This is a fake submission only evaluated locally
     std::chrono::steady_clock::time_point submit_start = std::chrono::steady_clock::now();
     bool accepted =
-        EthashAux::eval(solution.work.epoch, solution.work.header, solution.nonce).value <=
-        solution.work.boundary;
+        EthashAux::eval(solution.work.epoch, solution.work.block, solution.work.header, solution.nonce).value <=
+        solution.work.get_boundary();
     std::chrono::milliseconds response_delay_ms =
         std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::steady_clock::now() - submit_start);
@@ -82,14 +82,15 @@ void SimulateClient::workLoop()
     // apply exponential sliding average
     // ref: https://en.wikipedia.org/wiki/Moving_average#Exponential_moving_average
 
-
     WorkPackage current;
     current.seed = h256::random();  // We don't actually need a real seed as the epoch
                                     // is calculated upon block number (see poolmanager)
     current.header = h256::random();
     current.block = m_block;
-    current.boundary = h256(dev::getTargetFromDiff(1));
+    current.boundary = h256(dev::getTargetFromDiff(m_difficulty));
     m_onWorkReceived(current);  // submit new fake job
+
+    cnote << "Using block " << m_block << ", difficulty " << m_difficulty;
 
     while (m_session)
     {
